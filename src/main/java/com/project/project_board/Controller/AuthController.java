@@ -11,17 +11,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 
 @RestController
 //@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/auth")
 public class AuthController {
+
     @Autowired AuthService authService;
+
     @PutMapping("/signUp")
-    public ResponseDto<?>signUp(@RequestBody SignUpDto requestBody) {
+    public ResponseDto<?> signUp(@RequestBody SignUpDto requestBody) {
         //System.out.println(requestBody.toString());
         ResponseDto<?> result = authService.signUp(requestBody);
         return result;
     }
+
+    @PostMapping("/login")
+    public ResponseDto<?> login(@RequestBody LoginDto requestBody) {
+        
+        return null;
+    }
+    
 }
