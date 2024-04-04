@@ -1,10 +1,6 @@
 package Dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-import javax.print.DocFlavor.STRING;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
