@@ -20,11 +20,11 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @PostMapping("/signUp")
-    public ResponseDto<?> signUp(@RequestBody SignUpDto requestBody) {
-        ResponseDto<?> result = authService.signUp(requestBody);
-        return result;
-    }
+    @PostMapping("/signup")
+public ResponseEntity<?> signUp(@RequestBody SignUpDto requestBody) {
+    ResponseDto<?> result = authService.signUp(requestBody);
+    return ResponseEntity.ok().body(result);
+}
 
     @PostMapping("/counselorSignIn")
     public ResponseDto<?> counselorSignIn(@RequestBody SignInDto requestBody) {

@@ -17,9 +17,9 @@ import com.project.project_board.Security.TokenProvider;
 public class AuthService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired
-    TokenProvider tokenProvider;
+    private TokenProvider tokenProvider;
 
     public ResponseDto<?> signUp(SignUpDto dto) {
 

@@ -12,7 +12,10 @@ import com.nimbusds.jose.crypto.MACVerifier;
 import java.time.Instant;
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 @Data
+@Component
 public class TokenProvider {
     private static final String SECURITY_KEY = "inputYourSecurityKey";
 
