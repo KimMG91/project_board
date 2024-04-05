@@ -22,19 +22,21 @@ repositories {
 }
 
 dependencies {
+
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	
+
 	// validation << *이 항목을 추가
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	// Spring Data JPA 의존성 추가
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.4'
+	// spring-boot-starter-data-jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
 
 	 // Jakarta EE Servlet API 의존성 추가
-    implementation 'jakarta.platform:jakarta.jakartaee-api:9.0.0'
+    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
 	//DB
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -46,7 +48,7 @@ dependencies {
 	// security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
-	 // jwt token
+	// jwt token
     implementation 'com.nimbusds:nimbus-jose-jwt:9.31'	// *jwt 토큰 생성을 위해 추가
 }
 

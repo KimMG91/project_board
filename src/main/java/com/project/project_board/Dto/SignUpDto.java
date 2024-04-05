@@ -1,4 +1,4 @@
-package Dto;
+package com.project.project_board.Dto;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

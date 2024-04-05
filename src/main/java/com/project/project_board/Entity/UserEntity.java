@@ -1,11 +1,16 @@
 package com.project.project_board.Entity;
 
+import com.project.project_board.Dto.SignUpDto;
+
+
+
 import java.time.LocalDateTime;
 
-import Dto.SignUpDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import org.springframework.data.annotation.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,7 +43,7 @@ public class UserEntity {
         this.name = dto.getName();
         this.phoneNumber = dto.getPhoneNumber();
         this.userType = dto.getUserType();
-        this.token = dto.getToken();
+        this.token = "";
         this.createdAt = LocalDateTime.now();
         this.editedAt = LocalDateTime.now();
     }
