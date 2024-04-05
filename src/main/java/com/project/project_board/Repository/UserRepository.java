@@ -7,5 +7,5 @@ import com.project.project_board.Entity.UserEntity;
 
 @NoRepositoryBean
 public interface UserRepository extends JpaRepository<UserEntity, String>{
-    
+    public boolean existsByEmailAndPassword(String email, String password);
 }

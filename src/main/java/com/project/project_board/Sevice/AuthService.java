@@ -6,15 +6,21 @@ import org.springframework.stereotype.Service;
 
 import com.project.project_board.Entity.UserEntity;
 import com.project.project_board.Repository.UserRepository;
+import com.project.project_board.Security.TokenProvider;
 
+import Dto.LoginDto;
+import Dto.LoginResponseDto;
 import Dto.ResponseDto;
+import Dto.SignInDto;
 import Dto.SignInResponseDto;
 import Dto.SignUpDto;
 
 @Service
 public class AuthService {
     @Autowired UserRepository userRepository;
+    @Autowired TokenProvider tokenProvider;
     public ResponseDto<?> signUp(SignUpDto dto){
+        
         String email = dto.getEmail();
         String password =dto.getPassword();
         String confirmPassword = dto.getCofirmPassword();
@@ -59,6 +65,43 @@ public class AuthService {
        
     }
 
+    public ResponseDto<LoginResponseDto> login(LoginDto dto){
+        String email = dto.getEmail();
+        String password = dto.getPassword();
+
+        try{
+            //사용자 id / password 일치하는지 확인
+            boolean exised = userRepository.existsByEmailAndPassword(email, password);
+            if (!exised) {
+                return ResponseDto.setFailed("입력하신 로그인 정보가 존재하지 않습니다.");
+            }
+        }catch(Exception e){
+            return ResponseDto.setFailed("데이터베이스 연결에 실패하였습니다.");
+        }
+
+        UserEntity userEntity = null;
+
+        try{
+            //값이 존재하는 경우 사용자 정보 불러옴(기준 email)
+            userEntity = userRepository.findById(email).get();
+        }catch(Exception e){
+            return ResponseDto.setFailed("데이터베이스 연결에 실패하였습니다.");
+        }
+
+        userEntity.setPassword("");
+
+        int exprTime = 3600;
+        String token = tokenProvider.createJwt(email, exprTime);
+
+        if (token == null) {
+            return ResponseDto.setFailed("토큰 생성에 실패하였습니다.");
+        }
+
+        LoginResponseDto loginResponseDto = new LoginResponseDto(token, exprTime, userEntity);
+
+        return ResponseDto.setSuccessData("로그인에 성공하였습니다",loginResponseDto);
+    }
+
     public ResponseDto<SignInResponseDto> singin(SignUpDto dto){
         String email = dto.getEmail();
         String password = dto.getPassword();
@@ -88,7 +131,9 @@ public class AuthService {
         String name = userEntity.getName();
 
 
-        return ResponseDto.setSuccessData("로그인에 성공하였습니다.", loginResponseDto);
+        return ResponseDto.setSuccessData("로그인에 성공하였습니다.", lo);
     }
+
+   
 
 }

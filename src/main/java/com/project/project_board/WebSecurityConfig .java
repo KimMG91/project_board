@@ -14,7 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityCongfig {
+public class WebSecurityConfig{
     @Bean
     //어떤한 Url로 진입해도 로그인 페이지 인도
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
