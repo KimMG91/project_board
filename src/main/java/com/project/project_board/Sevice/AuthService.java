@@ -1,5 +1,7 @@
 package com.project.project_board.Sevice;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,15 +23,14 @@ public class AuthService {
     @Autowired
     private TokenProvider tokenProvider;
 
+    @Transactional
     public ResponseDto<?> signUp(SignUpDto dto) {
-
         String email = dto.getEmail();
         String password = dto.getPassword();
-        String confirmPassword = dto.getCofirmPassword();
+        String confirmPassword = dto.getConfirmPassword();
 
-        // email(id)중복 확인
+        // email(id) 중복 확인
         try {
-            // 존재하는 경우 : true /존재하지 않는 경우 : false
             if (userRepository.existsById(email)) {
                 return ResponseDto.setFailed("중복된 Email 입니다.");
             }
@@ -37,34 +38,31 @@ public class AuthService {
             return ResponseDto.setFailed("데이터베이스 연결에 실패하였습니다.");
         }
 
-        // password 중복 확인
+        // 비밀번호 암호화 및 비교
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(password); // 클라이언트 쪽에서 가져온 비밀번호, 비밀번호 확인 둘다 암호화해서 비교하려고 하면 안됌,
+
+        // 비밀번호 일치 여부 확인
         if (!password.equals(confirmPassword)) {
             return ResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
         }
 
-        // UserEntity생성
+        // 회원 엔티티 생성 및 저장
         UserEntity userEntity = new UserEntity(dto);
-
-        // 비밀번호 암호화
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(password);
-
-        boolean isPasswordMatch = passwordEncoder.matches(password, hashedPassword);
-
-        if (!isPasswordMatch) {
-            return ResponseDto.setFailed("암호화 실패했습니다.");
-        }
-
         userEntity.setPassword(hashedPassword);
 
-        // UserRepository를 이용하여 DB에 entity저장
         try {
+            // 회원가입 엔티티에 저장
             userRepository.save(userEntity);
-        } catch (Exception e) {
-            return ResponseDto.setFailed("데이터베이스 연결에 실패하였습니다.");
-        }
 
-        return ResponseDto.setSuccess("회원 생성에 성공했습니다.");
+            // 비밀번호 제거하여 반환 , 암호화된 비밀번호만 넘기고 기존 입력했던 password정보는 제거
+            dto.setPassword(null);
+            dto.setConfirmPassword(null);
+
+            return ResponseDto.setSuccessData("회원 생성에 성공했습니다.", dto);
+        } catch (Exception e) {
+            return ResponseDto.setFailed("회원 생성에 실패하였습니다.");
+        }
 
     }
 
@@ -115,39 +113,4 @@ public class AuthService {
         throw new UnsupportedOperationException("Unimplemented method 'counselorSignIn'");
     }
 
-    // public ResponseDto<SignInResponseDto> signIn(SignInDto dto) {
-    //     String email = dto.getEmail();
-    //     String password = dto.getPassword();
-    //     UserEntity userEntity;
-
-    //     try {
-    //         // 이메일로 사용자 정보 가져오기
-    //         userEntity = userRepository.findById(email).orElse(null);
-    //         if (userEntity == null) {
-    //             return ResponseDto.setFailed("입력하신 이메일로 등록된 계정이 존재하지 않습니다.");
-    //         }
-
-    //         // 사용자가 입력한 비밀번호를 BCryptPasswordEncoder를 사용하여 암호화
-    //         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    //         String encodedPassword = userEntity.getPassword();
-
-    //         // 저장된 암호화된 비밀번호와 입력된 암호화된 비밀번호 비교
-    //         if (!passwordEncoder.matches(password, encodedPassword)) {
-    //             return ResponseDto.setFailed("비밀번호가 일치하지 않습니다.");
-    //         }
-    //     } catch (Exception e) {
-    //         return ResponseDto.setFailed("데이터베이스 연결에 실패하였습니다.");
-    //     }
-
-    //       // Client에 비밀번호 제공 방지
-    //       userEntity.setPassword("");
-    //       String name = userEntity.getName();
-        
-
-    //       //생략된 코드 넣기!!
-    //       LoginResponseDto loginResponseDto = new LoginResponseDto(token, exprTime, userEntity);
-          
-
-    //     return ResponseDto.setSuccessData("로그인에 성공하였습니다.", loginResponseDto);
-    // }
 }

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class mvcConfigurer implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
+        registry.addMapping("/**") // addMapping("/**")은 모든 요청에 대해 CORS를 활성화한다는 것을 의미합니다. 엔드포인트에서 CORS가 허용 됩니다.
                 .allowedOriginPatterns()
                 .allowedHeaders("*")
                 .exposedHeaders("*");
