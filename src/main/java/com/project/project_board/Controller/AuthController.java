@@ -24,15 +24,20 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody SignUpDto requestBody) {
         ResponseDto<?> result = authService.signUp(requestBody);
-        return ResponseEntity.ok().body(result);
+
+        // 회원가입이 성공했을 경우
+        if (result.getData() != null) {
+            return ResponseEntity.ok().body(result);
+        } else {
+            return ResponseEntity.badRequest().body(result);
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?>login (@RequestBody LoginDto requestBody) {
-       ResponseDto<?> result = authService.login(requestBody);
+    public ResponseEntity<?> login(@RequestBody LoginDto requestBody) {
+        ResponseDto<?> result = authService.login(requestBody);
         return ResponseEntity.ok().body(result);
     }
-    
 
     @PostMapping("/counselorSignIn")
     public ResponseDto<?> counselorSignIn(@RequestBody SignInDto requestBody) {

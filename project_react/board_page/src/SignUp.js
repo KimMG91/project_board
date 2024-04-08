@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
+  //HistoryRouterProps
+  const navigate = useNavigate();
+
   // 폼 입력값을 관리할 상태 변수 선언 및 초기화
   const [formData, setFormData] = useState({
     email: "",
@@ -10,7 +14,6 @@ function SignUp() {
     phoneNumber: "",
     userType: "",
   });
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +38,11 @@ function SignUp() {
       const data = await response.json();
 
       console.log(data);
+
+      if (response.ok) {
+        navigate("/login");
+      }
+      
     } catch (error) {
       console.error("Error:", error);
     }
