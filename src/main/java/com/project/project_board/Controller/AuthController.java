@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/auth")//접속경로
 public class AuthController {
     @Autowired
     AuthService authService;
 
-    @PostMapping("/signup")
+    @PostMapping("/signup")//회원가입 컨트롤러
     public ResponseEntity<?> signUp(@RequestBody SignUpDto requestBody) {
         ResponseDto<?> result = authService.signUp(requestBody);
 
@@ -33,7 +33,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login")//로그인 컨트롤러
     public ResponseEntity<?> login(@RequestBody LoginDto requestBody) {
         ResponseDto<?> result = authService.login(requestBody);
         return ResponseEntity.ok().body(result);

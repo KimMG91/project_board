@@ -42,7 +42,6 @@ function SignUp() {
       if (response.ok) {
         navigate("/login");
       }
-      
     } catch (error) {
       console.error("Error:", error);
     }
@@ -98,15 +97,16 @@ function SignUp() {
           required
         />
         <br />
-        <input
-          type="text"
+        <select
+          style={{ width: 175, textAlign: "center" }}
           name="userType"
-          value={formData.userType}
           onChange={handleChange}
-          placeholder="사용자 권한"
+          value={formData.userType}
           required
-        />
-        <br />
+        >
+          <option value="user">사용자</option>
+          <option value="admin">관리자</option>
+        </select>
         <button type="submit">회원가입</button>
       </form>
     </div>
