@@ -3,8 +3,6 @@ package com.project.project_board.Security;
 import com.nimbusds.jose.*;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.project.project_board.Entity.UserEntity;
-
 import lombok.Data;
 
 import com.nimbusds.jose.crypto.MACSigner;
