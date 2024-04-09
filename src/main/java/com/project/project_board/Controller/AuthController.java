@@ -27,7 +27,7 @@ public class AuthController {
 
         // 회원가입이 성공했을 경우
         if (result.getData() != null) {
-            return ResponseEntity.ok().body(result);
+            return ResponseEntity.ok().body(setToken(result));
         } else {
             return ResponseEntity.badRequest().body(result);
         }
@@ -36,7 +36,12 @@ public class AuthController {
     @PostMapping("/login")//로그인 컨트롤러
     public ResponseEntity<?> login(@RequestBody LoginDto requestBody) {
         ResponseDto<?> result = authService.login(requestBody);
-        return ResponseEntity.ok().body(result);
+         // 로그인성공했을 경우
+         if (result.getData() != null) {
+            return ResponseEntity.ok().body(setToken(result));
+        } else {
+            return ResponseEntity.badRequest().body(result);
+        }
     }
 
     @PostMapping("/counselorSignIn")

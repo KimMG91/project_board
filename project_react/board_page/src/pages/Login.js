@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
+ //HistoryRouterProps
+ const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -36,6 +39,9 @@ function Login() {
       if (data.result) {
         // 로그인 성공시에는 토큰 등의 정보를 처리하거나 페이지를 이동하는 등의 작업을 수행할 수 있습니다.
         console.log('로그인 성공!');
+        if (response.ok) {
+          navigate("/myinfo");
+        }
       } else {
         console.log('로그인 실패:', data.message);
       }
@@ -46,6 +52,7 @@ function Login() {
   
 
   return (
+    
     <div>
       <h2>로그인</h2>
       <form onSubmit={handleLogin}>
@@ -64,6 +71,7 @@ function Login() {
         계정이 없으신가요? <Link to="/signup">회원가입</Link>
       </p>
     </div>
+    
   );
 }
 
