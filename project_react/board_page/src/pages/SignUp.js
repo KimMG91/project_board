@@ -12,7 +12,7 @@ function SignUp() {
     confirmPassword: "",
     name: "",
     phoneNumber: "",
-    userType: "",
+    userType: "User",
   });
 
   const handleChange = (e) => {
@@ -104,8 +104,8 @@ function SignUp() {
           value={formData.userType}
           required
         >
-          <option value="user">사용자</option>
-          <option value="admin">관리자</option>
+          <option value="User">사용자</option>
+          <option value="Admin">관리자</option>
         </select>
         <button type="submit">회원가입</button>
       </form>

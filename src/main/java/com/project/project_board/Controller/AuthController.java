@@ -3,11 +3,13 @@ package com.project.project_board.Controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.project_board.Dto.LoginDto;
+import com.project.project_board.Dto.LoginResponseDto;
 import com.project.project_board.Dto.ResponseDto;
 import com.project.project_board.Dto.SignInDto;
-import com.project.project_board.Dto.SignInResponseDto;
 import com.project.project_board.Dto.SignUpDto;
+import com.project.project_board.Security.TokenProvider;
 import com.project.project_board.Sevice.AuthService;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class AuthController {
     @Autowired
     AuthService authService;
+    @Autowired
+    TokenProvider tokenProvider;
 
     @PostMapping("/signup")//회원가입 컨트롤러
     public ResponseEntity<?> signUp(@RequestBody SignUpDto requestBody) {
@@ -43,7 +47,7 @@ public class AuthController {
             return ResponseEntity.badRequest().body(result);
         }
     }
-
+    
     @PostMapping("/counselorSignIn")
     public ResponseDto<?> counselorSignIn(@RequestBody SignInDto requestBody) {
         ResponseDto<?> result = authService.counselorSignIn(requestBody);
@@ -58,17 +62,24 @@ public class AuthController {
 
     // Response 결과에 따라 Header에 Token 설정
     private ResponseEntity<?> setToken(ResponseDto<?> result) {
-        // 요청이 성공인 경우
-        if (result.getResult()) {
-            // reulst -> data -> token 추출
-            SignInResponseDto signInResponse = (SignInResponseDto) result.getData();
-
-            // Header에 Auth에 Token 지정, Body에는 result 그대로 작성 (result 내의 token은 제거해도 될듯)
+    // 요청이 성공한 경우
+    if (result.getResult()) {
+        // result -> data -> token 추출
+        if (result.getData() instanceof LoginResponseDto) {
+            LoginResponseDto loginResponse = (LoginResponseDto) result.getData();
+            String token = loginResponse.getToken();
+            
+            // Header에 Auth에 토큰 지정, Body에는 result 그대로 작성
             return ResponseEntity.ok()
-                    .header("Authorization", "Bearer " + signInResponse.getToken())
+                    .header("Authorization", "Bearer " + token)
                     .body(result);
         } else {
-            return ResponseEntity.ok().body(result);
+            // 타입이 다를 경우 예외를 처리하거나 다른 응답을 반환
+            return ResponseEntity.badRequest().body("Unexpected data type");
         }
+    } else {
+        return ResponseEntity.badRequest().body(result);
     }
+}
+
 }

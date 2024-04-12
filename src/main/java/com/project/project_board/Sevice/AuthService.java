@@ -71,6 +71,8 @@ public class AuthService {
     public ResponseDto<LoginResponseDto> login(LoginDto dto) {
         String email = dto.getEmail();
         String password = dto.getPassword();
+        String phoneNumber = dto.getPhoneNumber();
+        String userType = dto.getUserType();
 
         try {
             // 사용자 id에 해당하는 정보 조회
@@ -92,13 +94,13 @@ public class AuthService {
 
             // 토큰 생성
             int exprTime = 360; // 10분
-            String token = tokenProvider.createJwt(email, exprTime);
+            String token = tokenProvider.createJwt(email, exprTime, phoneNumber,userType);
             if (token == null) {
                 return ResponseDto.setFailed("토큰 생성에 실패하였습니다.");
             }
 
             // 로그인 응답 DTO에 토큰 추가하여 생성
-            LoginResponseDto loginResponseDto = new LoginResponseDto(token, exprTime, userEntity);
+            LoginResponseDto loginResponseDto = new LoginResponseDto(token, exprTime, token, token, userEntity);
 
             // 로그인 성공 메시지와 함께 로그인 응답 DTO 반환
             return ResponseDto.setSuccessData("로그인에 성공하였습니다.", loginResponseDto);

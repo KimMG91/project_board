@@ -13,7 +13,14 @@ public class LoginDto {
 
   @NotBlank // *Spring-Boot-starter-validation 필수값
   private String email;
-  
+
   @NotBlank
   private String password;
+
+  @NotBlank
+  private String phoneNumber;
+  
+  @NotBlank
+  private String userType; 
+
 }

@@ -32,7 +32,7 @@ public class TokenProvider {
     private static final String SECURITY_KEY = generateSecurityKey();
 
     // JWT 생성 메서드
-    public String createJwt(String email, int duration) {
+    public String createJwt(String email, int duration, String userType, String phoneNumber) {
         try {
             // 현재 시간 기준으로 duration(초) 후 만료시간 설정
             Instant now = Instant.now();
@@ -43,6 +43,8 @@ public class TokenProvider {
                     .subject(email)
                     .issueTime(Date.from(now))
                     .expirationTime(Date.from(exprTime))
+                    .claim("userType", userType)
+                    .claim("phoneNumber", phoneNumber)
                     .build();
             // JWT 서명
             SignedJWT signedJWT = new SignedJWT(

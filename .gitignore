@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+#  github에 파일/폴더 커밋 방지 방법 #
+### APIKey ###
+APIKey.java

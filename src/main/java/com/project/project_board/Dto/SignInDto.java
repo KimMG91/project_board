@@ -1,15 +1,27 @@
 package com.project.project_board.Dto;
 
 public class SignInDto {
+    private String email;
+    private String password;
 
-    public String getPassword() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+    public SignInDto(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public String getEmail() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getEmail'");
+        return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

@@ -22,13 +22,13 @@ public class ResponseDto<D> {
     }
 
     //선공 Return + Data
-    public static <D> ResponseDto<D> setSuccessData(String message, D date){
-        return ResponseDto.set(true, message, date);
+    public static <D> ResponseDto<D> setSuccessData(String message, D data){
+        return ResponseDto.set(true, message, data);
     }
 
     //실패 Return + Data
-    public static <D> ResponseDto<D> setFaildeData(String message, D date){
-        return ResponseDto.set(false, message, date);
+    public static <D> ResponseDto<D> setFaildeData(String message, D data){
+        return ResponseDto.set(false, message, data);
     }
 
     //요청 성공 여부 확인
